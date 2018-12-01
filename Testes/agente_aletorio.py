@@ -1,4 +1,5 @@
 import retro #biblioteca para integracao com os jogos
+import time  #caso precise fazer um sleep no sistema para checar as coisas
 
 #importei a rom com o comando:
 
@@ -24,3 +25,4 @@ while not done: #enquanto estamos "vivos":
 	print("Recompensa:", rew) #recompensa
 	print("Terminou?", done) #terminou?
 	print("Infos Adicionais", info) #valores setados em data.json
+	#time.sleep(0.1)
