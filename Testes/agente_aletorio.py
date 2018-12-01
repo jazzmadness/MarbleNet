@@ -1,11 +1,16 @@
 import retro #biblioteca para integracao com os jogos
 import time  #caso precise fazer um sleep no sistema para checar as coisas
+from utilitarios import DiscretizadorAcoes
 
 #importei a rom com o comando:
 
 #python3 -m retro.import caminho/do/arquivo/marble_madness.md
 
 env = retro.make('MarbleMadness-Genesis', 'Level1')
+
+#modifica o array de acoes possiveis para apenas necessarias
+
+env = DiscretizadorAcoes(env)
 
 env.reset() 
 
