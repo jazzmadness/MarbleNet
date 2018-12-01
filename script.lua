@@ -32,7 +32,7 @@ function recompensa_punicao()
 		tempo_anterior = tempo_atual
 
 		if data.time == 0 then
-			delta_combinado = delta_combinado - 100 --punicao extra por ter perdido
+			delta_combinado = delta_combinado - 1000 --punicao extra por ter perdido
 		end
 		return delta_combinado
 	else -- se nao aconteceu nada (o agente nao se mexeu, ou seja, nao ganhou score) ou o tempo nao mudou de valor (pois estamos olhando frame a frame, o tempo so muda a cada segundo), nao da nenhuma recomepnsa
