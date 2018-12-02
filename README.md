@@ -4,4 +4,5 @@ Projeto para explorar o universo de reinforcement learning com as ferramentas gy
 
 ## Referência: 
 * https://simoninithomas.github.io/Deep_reinforcement_learning_Course/
+* https://www.quora.com/How-can-I-calculate-the-size-of-output-of-convolutional-layer
 
