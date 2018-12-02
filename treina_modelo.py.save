@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from wrappers import *
 from memoria import Mem
 from epsilon_greedy import eg
-from arquitetura_rede_DQN import DQRede
+from arquitetura_rede import DQRede
 
 #inicia o ambiente
 
@@ -70,7 +70,7 @@ Q_hat = Valor Q predito pela rede neural
 gamma = 0.95
 
 #memoria
-pretrain = tamanho_batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
+pretrain = batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
 					#(precisamos de dados para comecar)
 tamanho_memoria = 1e6
 
