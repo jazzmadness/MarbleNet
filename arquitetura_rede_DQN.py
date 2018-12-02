@@ -23,7 +23,7 @@ class DQRede:
 			'''
 			self.Q_target = tf.placeholder(tf.float32, [None], name = "Q-Target")
 			"""
-			Primeira Convolucao com Batch e Ativacao ELU
+			Primeira Convolucao com Batch Norm e Ativacao ELU
 			Input: 224X320XN (N imagens empilhadas)
 			"""
 			self.conv1 = tf.layers.conv2d(inputs = self.inputs, #entrada
@@ -56,7 +56,7 @@ class DQRede:
 			'''
 
 			'''
-			Segunda Convolucao com Batch e Ativacao ELU
+			Segunda Convolucao com Batch Norm e Ativacao ELU
 			'''
 			self.conv2 = tf.layers.conv2d(inputs = self.max_pool_1, #entrada
 										  filters = 32, #numero de saidas de cada aplicadao do filtro
@@ -75,7 +75,7 @@ class DQRede:
 			'''
 
 			'''
-			Terceira Convolucao com Batch e Ativacao ELU
+			Terceira Convolucao com Batch Norm e Ativacao ELU
 			'''
 			self.conv3 = tf.layers.conv2d(inputs = self.conv2_saida, #entrada
 										  filters = 128, #numero de saidas de cada aplicadao do filtro
