@@ -22,7 +22,7 @@ estado: imagem do estado que esta no jogo
 acoes_possiveis: acoes possiveis (em vetor de vetores) 
 '''
 
-def epsilon_greedy(sess, prob_inicial, min_prob, tx_decay, passo_decay, estado, acoes_possiveis):
+def eg(sess, prob_inicial, min_prob, tx_decay, passo_decay, estado, acoes_possiveis):
 	#define um numero aleatorio como o tradeoff entre exploracao e tirar vantagem
 	exp_vant_tradeoff = np.random.rand()
 
