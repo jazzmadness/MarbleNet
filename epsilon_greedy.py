@@ -22,16 +22,16 @@ estado: imagem do estado que esta no jogo
 acoes_possiveis: acoes possiveis (em vetor de vetores) 
 '''
 
-def eg(sess, prob_inicial, min_prob, tx_decay, passo_decay, estado, acoes_possiveis):
+def eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado):
 	#define um numero aleatorio como o tradeoff entre exploracao e tirar vantagem
 	exp_vant_tradeoff = np.random.rand()
 
 	#probabilidade de exploracao
 	prob_exp = min_prob + (prob_inicial - min_prob) * np.exp(-decay)
 
-	if (prob_exp, exp_vant_tradeoff):
+	if (prob_exp > exp_vant_tradeoff):
 		#explora
-		acao = random.choice(acoes_possiveis)
+		acao = env.action_space.sample()
 
 	else:
 		#procura melhor acao baseada na estimacao do Q-valor da rede neural
@@ -40,7 +40,8 @@ def eg(sess, prob_inicial, min_prob, tx_decay, passo_decay, estado, acoes_possiv
 												}
 					)
 
-		#procura o indice da melhor acao e acha assim o vetor da melhor acao
-		acao = acoes_possiveis[np.argmax(Qs)]
+		#procura o indice da melhor acao
+		#acao = acoes_possiveis[np.argmax(Qs)]
+		acao = np.argmax(Qs)
 
 	return acao, prob_exp
