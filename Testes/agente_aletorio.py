@@ -1,6 +1,8 @@
 import retro #biblioteca para integracao com os jogos
 import time  #caso precise fazer um sleep no sistema para checar as coisas
+import numpy as np
 from utilitarios import DiscretizadorAcoes
+
 
 #importei a rom com o comando:
 
@@ -22,8 +24,15 @@ while not done: #enquanto estamos "vivos":
 
 	acao = env.action_space.sample() #tira uma amostra de todas as acoes possiveis
 
-	print(acao) #imprimi essa acao no terminal
+	#acao = 9 essa acao por exemplo, vai para baixo
 
+	aux = np.zeros(env.action_space.n)
+
+	aux[acao] = 1
+
+	print(acao) #imprimi essa acao no terminal
+	print(aux) #transformacao para vetor
+ 
 	ob,rew,done,info = env.step(acao) #coleta todas as informacoes resultantes de um step no ambiente
 
 	print("Shape da Imagem", ob.shape) #imagem para trabalhar no modelo
