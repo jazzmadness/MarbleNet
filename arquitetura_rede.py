@@ -39,7 +39,7 @@ class DQRede:
 																 name = 'Batch_Norm1')
 			self.conv1_saida = tf.nn.elu(self.conv1_batchnorm, name = "Conv1_Saida")
 			'''
-			Saida -> 110X158X24
+			Saida:110X158X24
 			'''
 
 			'''
