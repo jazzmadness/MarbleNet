@@ -2,11 +2,12 @@
 
 import numpy as np
 import gym
+import cv2
 
 #vamos por stack de frames para ter nocao de movimento. ja tem um metodo implementado em
 #https://github.com/openai/baselines
 
-from baselines.common.atari_wrappers import FrameStack
+#from baselines.common.atari_wrappers import FrameStack
 
 class DiscretizadorAcoes(gym.ActionWrapper):
 	'''
@@ -42,9 +43,24 @@ class DiscretizadorAcoes(gym.ActionWrapper):
 
 		self.action_space = gym.spaces.Discrete(len(self._actions))
 
+	'''
+	Aqui retorna o array ao inves da acao discreta
+	'''
+
 	def action(self, a):
 		return self._actions[a].copy()
 
+'''
+Modifica o Observation Wrapper para soltar imagens em escala de cinza
+'''
 
+class TrataImg(gym.ObservationWrapper):
+	def __init__(self, env):
+		super(TrataImg, self).__init__(env) #chama o init do ObservationWrapper
+	def observation(self, frame):
+		#converte para escala de cinza
+		frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+
+		return frame
 
 
