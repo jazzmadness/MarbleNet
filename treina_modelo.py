@@ -207,17 +207,18 @@ with tf.Session() as sess:
                                     feed_dict={DQRede.inputs: estados_mb,
                                                DQRede.Q_target: targets_mb,
                                                DQRede.acoes: acoes_mb})
-			# Manda para o Tensorboard
-            sumario = sess.run(write_op, feed_dict={DQNetwork.inputs: estados_mb,
+			#manda para o TensorBoard
+			sumario = sess.run(write_op, 
+            						feed_dict={DQNetwork.inputs: estados_mb,
                                                    DQNetwork.Q_target: targets_mb,
                                                    DQNetwork.acoes: acoes_mb})
-            writer.add_summary(sumario, episodio)
-            writer.flush()
+			writer.add_summary(sumario, episodio)
+			writer.flush()
 
-        # salva o modelo a cada 5 episodios
-        if episodio % 5 == 0:
-        	save_path = saver.save(sess, "./models/modelo_DQN_1.ckpt")
-        	print("Modelo Salvo!")
+		#a cada 5 episodios salva o modelo
+		if episodio % 5 == 0:
+			save_path = saver.save(sess, "./models/modelo_DQN_1.ckpt")
+			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)
 		print('Episodio: {}'.format(episodio),
