@@ -136,7 +136,7 @@ class DQRede:
 			self.perda = tf.reduce_mean(tf.square(self.Q_target - self.Q))
 
 			'''
-			Otimiza usando o ADAM
+			Otimiza
 			'''
 
 			self.otimizador = tf.train.RMSPropOptimizer(self.learning_rate).minimize(self.perda)
