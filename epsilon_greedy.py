@@ -22,12 +22,12 @@ estado: imagem do estado que esta no jogo
 acoes_possiveis: acoes possiveis (em vetor de vetores) 
 '''
 
-def eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado):
+def eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp):
 	#define um numero aleatorio como o tradeoff entre exploracao e tirar vantagem
 	exp_vant_tradeoff = np.random.rand()
 
 	#probabilidade de exploracao
-	prob_exp = min_prob + (prob_inicial - min_prob) * np.exp(-decay)
+	prob_exp = min_prob + (prob_inicial - min_prob) * np.exp(-tx_decay * passo_decay)
 
 	if (prob_exp > exp_vant_tradeoff):
 		#explora
@@ -36,7 +36,7 @@ def eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado):
 	else:
 		#procura melhor acao baseada na estimacao do Q-valor da rede neural
 		Qs = sess.run(DQRede.output, feed_dict = {
-													DQRede.inputs: estado.reshape((1, *estado.shape))
+													DQRede.inputs: estado_emp.reshape((1, *estado_emp.shape))
 												}
 					)
 

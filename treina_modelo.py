@@ -20,7 +20,9 @@ from arquitetura_rede_DQN import DQRede
 
 #python3 -m retro.import caminho/do/arquivo/marble_madness.md
 
-env = retro.make('MarbleMadness-Genesis', 'Level1')
+print('Criando Ambiente...')
+
+env = retro.make('MarbleMadness-Genesis', 'Level1_Sem_Timer_Subindo')
 
 #modifica as imagens para sair em escala de cinza
 
@@ -34,6 +36,8 @@ env = FrameStack(env, 4)
 
 env = DiscretizadorAcoes(env)
 
+print('OK')
+
 '''
 exemplo:
 ob,rew,done,info = env.step(env.action_space.sample())
@@ -44,13 +48,15 @@ e epmilhar ele com np.stack(env.env.frames, axis = 2)
 
 #########hiperparametros#########:
 
+print('Criando Hiperparametros...')
+
 #modelo
 dim_estado = [224, 320, 4] #4 frames empilhados de 224x320
 tamanho_acao = env.action_space.n
 learning_rate = 0.0005
 
 #treino
-numero_episodios = 500
+numero_episodios = 100
 tamanho_batch = 64
 
 #epsilon greedy
@@ -72,25 +78,42 @@ gamma = 0.95
 #memoria
 pretrain = tamanho_batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
 					#(precisamos de dados para comecar)
-tamanho_memoria = 1e6
+tamanho_memoria = 1000000
+
+print('OK')
 
 ###############################
 
 #reseta o grafo (limpa alguma variavel, placeholder, etc)
 tf.reset_default_graph()
 
+print('Instanciando a Rede...')
+
 #define a rede
 DQRede = DQRede(dim_estado, tamanho_acao, learning_rate)
+
+print('OK')
+
+print('Criando Memoria...')
 
 #cria e popula a memoria
 memoria = Mem(buf = tamanho_memoria)
 
+print('OK')
+
+print('Resetando Ambiente...')
+
 #inicia
 env.reset()
 
+print('OK')
+
 #popula a memoria
 
+print('Populando a memoria...')
+
 for i in range(pretrain):
+	
 	if i == 0: 
 		#acao inicial
 		acao_disc = env.action_space.sample()
@@ -104,7 +127,7 @@ for i in range(pretrain):
 	prox_acao_array = env.action(prox_acao_disc)
 	prox_estado_emp = np.stack(env.env.frames, axis = 2)
 	#adiciona experiencia
-	memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
+	memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 	#atualizando as coisas atuais para rodar mais um futuro passo:
 	#estado atual recebe o proximo estado
 	estado_emp = prox_estado_emp
@@ -115,8 +138,15 @@ for i in range(pretrain):
 	#done atual recebe proximo done
 	done = prox_done
 
+print('OK')
+
 #reenicia o ambiente (agora vamos comecar de verdade)
+
+print('Resetando o Ambiente...')
+
 env.reset()
+
+print('OK')
 
 '''
 configura o tensorboard
@@ -125,13 +155,19 @@ e as imagens vao ser empilhadas, entao nao vai dar para ver muita coisa
 podemos apenas ver a perda
 '''
 
+print('Configurando TensorBoard...')
+
 #tensorboard --logdir=/tensorboard/dqn/1
 
 writer = tf.summary.FileWriter("/tensorboard/dqn/1")
-tf.summary.scalar("Loss", DQRede.loss)
+tf.summary.scalar("Perda", DQRede.perda)
 write_op = tf.summary.merge_all()
 
+print('OK')
+
 #TREINO
+
+print('Entrando no Treino...')
 
 #acoes_possiveis = [np.array(env.action(i)) for i in range(0, env.action_space.n)]
 
@@ -149,7 +185,9 @@ with tf.Session() as sess:
 		recompensas_episodio = []
 
 		#acao inicial
-		acao_disc, prob_exp = ep(env, prob_inicial, min_prob, tx_decay, passo_decay, estado)
+		env.render()
+		estado_emp = np.stack(env.env.frames, axis = 2)
+		acao_disc, prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
 		ob,rew,done,info = env.step(acao_disc)
 		acao_array = env.action(acao_disc)
 		estado_emp = np.stack(env.env.frames, axis = 2)
@@ -159,13 +197,15 @@ with tf.Session() as sess:
 
 		#entra em loop ate acabar
 		while not done:
+			env.render()
 			#escolhe ou exploracao ou abusar do que ja sabe pelo epsilon greedy
-			prox_acao_disc, prox_prob_exp = ep(env, prob_inicial, min_prob, tx_decay, passo_decay, estado)
+			prox_acao_disc, prox_prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
 			prox_ob,prox_rew,prox_done,prox_info = env.step(acao_disc)
 			prox_acao_array = env.action(acao_disc)		
 			prox_estado_emp = np.stack(env.env.frames, axis = 2)
 			recompensas_episodio.append(prox_rew)
-			memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
+			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
+			passo_decay += 1
 			#atualizando as coisas atuais para rodar mais um futuro passo:
 			#estado atual recebe o proximo estado
 			estado_emp = prox_estado_emp
@@ -180,20 +220,20 @@ with tf.Session() as sess:
 			#Sera realizado um aprendizado com um mini batch de experiencias que guardamos
 			mini_batch = memoria.amostra(tamanho_batch)
 
-			estados_mb = np.array([mb[0] for mb in mini_batch], ndim = 3)
+			estados_mb = np.array([mb[0] for mb in mini_batch], ndmin = 3)
 			acoes_mb = np.array([mb[1] for mb in mini_batch])
 			recompensas_mb = np.array([mb[2] for mb in mini_batch])
-			prox_estados_mb = np.array([mb[3] for mb in mini_batch], ndim = 3)
+			prox_estados_mb = np.array([mb[3] for mb in mini_batch], ndmin = 3)
 			dones_mb = np.array([mb[4] for mb in mini_batch])
 			Q_targets_mb = []
 
 			# Pega Valores Q do prox estado
 
-			Qs_prox_estado = sess.run(DQRede.output, feed_dict = {DQRede.inputs: prox_estados_mb})
+			Qs_prox_estado = sess.run(DQRede.saida, feed_dict = {DQRede.inputs: prox_estados_mb})
 
 			# Q Target = R se episodio terminou em s+1, senao Q_target = R + gamma*max{a}(Q_hat(s',a'))
 
-			for i in range(0, len(batch)):
+			for i in range(0, len(mini_batch)):
 				terminou = dones_mb[i]
 
 				if terminou:
@@ -203,21 +243,22 @@ with tf.Session() as sess:
 					Q_targets_mb.append(target)
 
 			targets_mb = np.array([mb for mb in Q_targets_mb])
+
 			perda, _ = sess.run([DQRede.perda, DQRede.otimizador],
                                     feed_dict={DQRede.inputs: estados_mb,
                                                DQRede.Q_target: targets_mb,
                                                DQRede.acoes: acoes_mb})
 			#manda para o TensorBoard
 			sumario = sess.run(write_op, 
-            						feed_dict={DQNetwork.inputs: estados_mb,
-                                                   DQNetwork.Q_target: targets_mb,
-                                                   DQNetwork.acoes: acoes_mb})
+            						feed_dict={DQRede.inputs: estados_mb,
+                                               DQRede.Q_target: targets_mb,
+                                               DQRede.acoes: acoes_mb})
 			writer.add_summary(sumario, episodio)
 			writer.flush()
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:
-			save_path = saver.save(sess, "./models/modelo_DQN_1.ckpt")
+			save_path = saver.save(sess, "modelo_DQN_1.ckpt")
 			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)
@@ -228,6 +269,8 @@ with tf.Session() as sess:
 		#reseta o ambiente e comeca outro episodio
 		print('Acabou episodio, resetando ambiente...')
 		env.reset()
+
+	print('Chegou ao limite de Episodios, treino acabou.')
 
 
 

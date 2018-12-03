@@ -36,7 +36,7 @@ class DiscretizadorAcoes(gym.ActionWrapper):
 		[0,0,0,0,0,0,1,0,0,0,0,0]
 		'''	
 		for acao in acoes:
-			arr = np.array([False] * 12)
+			arr = np.array([False] * 24)
 			for botao in acao:
 				arr[botoes.index(botao)] = True
 			self._actions.append(arr)

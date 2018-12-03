@@ -8,7 +8,7 @@ from utilitarios import DiscretizadorAcoes
 
 #python3 -m retro.import caminho/do/arquivo/marble_madness.md
 
-env = retro.make('MarbleMadness-Genesis', 'Level1')
+env = retro.make('MarbleMadness-Genesis', 'Level1_Sem_Timer_Subindo')
 
 #modifica o array de acoes possiveis para apenas necessarias
 

@@ -16,7 +16,7 @@ class Mem():
 		self.buffer.append(exp)
 	def amostra(self, batch):
 		return [self.buffer[i] for i in np.random.choice(
-														np.arrange(
+														np.arange(
 																	len(self.buffer)
 																	), 
 														size = batch,

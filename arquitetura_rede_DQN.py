@@ -16,7 +16,7 @@ class DQRede:
 		#inicializa variaveis
 		with tf.variable_scope(nome):
 			self.inputs = tf.placeholder(tf.float32, [None, *dim_estado], name = "Inputs") #[None, dim1, dim2, dim3]
-			self.acoes = tf.placeholder(tf.float32, [None, *tamanho_acao], name = "Acoes")
+			self.acoes = tf.placeholder(tf.float32, [None, tamanho_acao], name = "Acoes")
 			'''Q-Target = R(s,a) (recompensa no estado 's', fazendo a acao 'a') 
 			+ gamma*max{a}(Q_hat(s',a')) (maximo Q-Value entre todas as acoes, 
 			no proximo estado apos uma acao)
@@ -97,7 +97,7 @@ class DQRede:
 			Flatten: Achata tudo num vetor unidimensional para entrar nas camadas densas
 			'''
 
-			self.flatten = tf.layers.flaten(self.conv3_saida)
+			self.flatten = tf.layers.flatten(self.conv3_saida)
 
 			'''
 			Saida:1536
