@@ -226,7 +226,7 @@ with tf.Session() as sess:
 
 		#entra em loop ate acabar
 		while not done:
-			env.render()
+			#env.render()
 			#escolhe ou exploracao ou abusar do que ja sabe pelo epsilon greedy
 			prox_acao_disc, prox_prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
 			#print(prox_acao_disc)
