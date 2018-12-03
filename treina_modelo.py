@@ -186,12 +186,12 @@ with tf.Session() as sess:
 		prob_exp = min_prob + (prob_inicial - min_prob) * np.exp(-tx_decay * passo_decay)
 
 		if (prob_exp > exp_vant_tradeoff):
-			print('Explorando')
+			#print('Explorando')
 			#explora
 			acao = env.action_space.sample()
 
 		else:
-			print('Abusando')
+			#print('Abusando')
 			#procura melhor acao baseada na estimacao do Q-valor da rede neural
 			Qs = sess.run(DQRede.saida, feed_dict = {
 														DQRede.inputs: estado_emp.reshape((1, *estado_emp.shape))
@@ -214,7 +214,7 @@ with tf.Session() as sess:
 		recompensas_episodio = []
 
 		#acao inicial
-		env.render()
+		#env.render()
 		estado_emp = np.stack(env.env.frames, axis = 2)
 		acao_disc, prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
 		ob,rew,done,info = env.step(acao_disc)
@@ -229,12 +229,12 @@ with tf.Session() as sess:
 			env.render()
 			#escolhe ou exploracao ou abusar do que ja sabe pelo epsilon greedy
 			prox_acao_disc, prox_prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
-			print(prox_acao_disc)
+			#print(prox_acao_disc)
 			prox_ob,prox_rew,prox_done,prox_info = env.step(prox_acao_disc)
 
-			print("Recompensa:", prox_rew) #recompensa
-			print("Terminou?", prox_done) #terminou?
-			print("Infos Adicionais", prox_info) #valores setados em data.json
+			#print("Recompensa:", prox_rew) #recompensa
+			#print("Terminou?", prox_done) #terminou?
+			#print("Infos Adicionais", prox_info) #valores setados em data.json
 
 			prox_acao_array = env.action(prox_acao_disc)		
 			prox_estado_emp = np.stack(env.env.frames, axis = 2)
