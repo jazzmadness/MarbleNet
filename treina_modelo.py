@@ -238,7 +238,7 @@ with tf.Session() as sess:
 
 			prox_acao_array = env.action(prox_acao_disc)		
 			prox_estado_emp = np.stack(env.env.frames, axis = 2)
-			print(prox_acao_array)
+			#print(prox_acao_array)
 			recompensas_episodio.append(prox_rew)
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo_decay += 1
