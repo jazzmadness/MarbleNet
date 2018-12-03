@@ -296,7 +296,7 @@ with tf.Session() as sess:
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:
-			save_path = saver.save(sess, "modelo_DQN_1.ckpt")
+			save_path = saver.save(sess, "./models/modelo_DQN_1.ckpt")
 			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)

@@ -39,7 +39,7 @@ with tf.Session() as sess:
 	saver = tf.train.Saver()
 
 	# carrega o modelo
-	saver.restore(sess, "modelo_DQN_1.ckpt")
+	saver.restore(sess, "./models/modelo_DQN_1.ckpt")
 
 	done = False
 
