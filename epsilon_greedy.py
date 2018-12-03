@@ -16,7 +16,7 @@ Argumentos:
 sess: Sessao do tensorflow
 prob_inicial: probabilidade de exploracao no comeco
 min_prob: probabilidade minima de exploracao (nao cai mais que isso no decaimento exponencial)
-tx_decay: taxa do decaimento exponencial
+tx_decay: taxa do decaimento exponencial (lambda da distruibicao exponencial)
 passo_decay: qual passo esta do decaimento
 estado: imagem do estado que esta no jogo
 acoes_possiveis: acoes possiveis (em vetor de vetores) 
@@ -30,12 +30,14 @@ def eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp):
 	prob_exp = min_prob + (prob_inicial - min_prob) * np.exp(-tx_decay * passo_decay)
 
 	if (prob_exp > exp_vant_tradeoff):
+		print('Explorando')
 		#explora
 		acao = env.action_space.sample()
 
 	else:
+		print('Abusando')
 		#procura melhor acao baseada na estimacao do Q-valor da rede neural
-		Qs = sess.run(DQRede.output, feed_dict = {
+		Qs = sess.run(DQRede.saida, feed_dict = {
 													DQRede.inputs: estado_emp.reshape((1, *estado_emp.shape))
 												}
 					)

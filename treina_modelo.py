@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 #custom
 from wrappers import *
 from memoria import Mem
-from epsilon_greedy import eg
+#from epsilon_greedy import eg
 from arquitetura_rede_DQN import DQRede
 
 #inicia o ambiente
@@ -175,6 +175,35 @@ print('Entrando no Treino...')
 saver = tf.train.Saver()
 
 with tf.Session() as sess:
+
+	#deinfe estrategia epsilon greedy
+
+	def eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp):
+		#define um numero aleatorio como o tradeoff entre exploracao e tirar vantagem
+		exp_vant_tradeoff = np.random.rand()
+
+		#probabilidade de exploracao
+		prob_exp = min_prob + (prob_inicial - min_prob) * np.exp(-tx_decay * passo_decay)
+
+		if (prob_exp > exp_vant_tradeoff):
+			print('Explorando')
+			#explora
+			acao = env.action_space.sample()
+
+		else:
+			print('Abusando')
+			#procura melhor acao baseada na estimacao do Q-valor da rede neural
+			Qs = sess.run(DQRede.saida, feed_dict = {
+														DQRede.inputs: estado_emp.reshape((1, *estado_emp.shape))
+													}	
+						)
+
+			#procura o indice da melhor acao
+			#acao = acoes_possiveis[np.argmax(Qs)]
+			acao = np.argmax(Qs)
+
+		return acao, prob_exp
+
 	#inicializa as vars
 	sess.run(tf.global_variables_initializer())
 
@@ -200,9 +229,16 @@ with tf.Session() as sess:
 			env.render()
 			#escolhe ou exploracao ou abusar do que ja sabe pelo epsilon greedy
 			prox_acao_disc, prox_prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
-			prox_ob,prox_rew,prox_done,prox_info = env.step(acao_disc)
-			prox_acao_array = env.action(acao_disc)		
+			print(prox_acao_disc)
+			prox_ob,prox_rew,prox_done,prox_info = env.step(prox_acao_disc)
+
+			print("Recompensa:", prox_rew) #recompensa
+			print("Terminou?", prox_done) #terminou?
+			print("Infos Adicionais", prox_info) #valores setados em data.json
+
+			prox_acao_array = env.action(prox_acao_disc)		
 			prox_estado_emp = np.stack(env.env.frames, axis = 2)
+			print(prox_acao_array)
 			recompensas_episodio.append(prox_rew)
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo_decay += 1
@@ -243,6 +279,8 @@ with tf.Session() as sess:
 					Q_targets_mb.append(target)
 
 			targets_mb = np.array([mb for mb in Q_targets_mb])
+
+			#consegue a perda, e calcula e aplica os gradientes nos pesos
 
 			perda, _ = sess.run([DQRede.perda, DQRede.otimizador],
                                     feed_dict={DQRede.inputs: estados_mb,
