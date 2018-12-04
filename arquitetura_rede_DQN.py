@@ -16,7 +16,7 @@ class DQRede:
 		#inicializa variaveis
 		with tf.variable_scope(nome):
 			self.inputs = tf.placeholder(tf.float32, [None, *dim_estado], name = "Inputs") #[None, dim1, dim2, dim3]
-			self.acoes = tf.placeholder(tf.float32, [None, 12], name = "Acoes")
+			self.acoes = tf.placeholder(tf.float32, [None, tamanho_acao], name = "Acoes")
 			'''Q-Target = R(s,a) (recompensa no estado 's', fazendo a acao 'a') 
 			+ gamma*max{a}(Q_hat(s',a')) (maximo Q-Value entre todas as acoes, 
 			no proximo estado apos uma acao)
@@ -119,10 +119,10 @@ class DQRede:
 
 			self.saida = tf.layers.dense(inputs = self.tc,
 										 kernel_initializer = tf.contrib.layers.xavier_initializer(), #inicializador aleatorio dos pesos
-										 units = 12, #N saidas, onde N eh o numero de acoes possiveis
+										 units = tamanho_acao, #N saidas, onde N eh o numero de acoes possiveis
 										 activation = None)
 
-			#Q valor predito, eh a soma das 3 saidas vezes as 3 acoes
+			#Q valor predito, eh a soma das 8 saidas vezes as 8 acoes
 
 			self.Q = tf.reduce_sum(tf.multiply(self.saida, self.acoes), axis = 1)
 
