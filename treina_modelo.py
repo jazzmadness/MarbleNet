@@ -118,13 +118,13 @@ for i in range(pretrain):
 		#acao inicial
 		acao_disc = env.action_space.sample()
 		ob,rew,done,info = env.step(acao_disc)
-		acao_array = env.action(acao_disc)
+		acao_array = env.acoes_discretizadas(acao_disc)
 		estado_emp = np.stack(env.env.frames, axis = 2)
 
 	#proxima acao
 	prox_acao_disc = env.action_space.sample()
 	prox_ob, prox_rew, prox_done, prox_info = env.step(prox_acao_disc)
-	prox_acao_array = env.action(prox_acao_disc)
+	prox_acao_array = env.acoes_discretizadas(prox_acao_disc)
 	prox_estado_emp = np.stack(env.env.frames, axis = 2)
 	#adiciona experiencia
 	memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
@@ -218,7 +218,7 @@ with tf.Session() as sess:
 		estado_emp = np.stack(env.env.frames, axis = 2)
 		acao_disc, prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
 		ob,rew,done,info = env.step(acao_disc)
-		acao_array = env.action(acao_disc)
+		acao_array = env.acoes_discretizadas(acao_disc)
 		estado_emp = np.stack(env.env.frames, axis = 2)
 		recompensas_episodio.append(rew)
 		#memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
@@ -226,7 +226,7 @@ with tf.Session() as sess:
 
 		#entra em loop ate acabar
 		while not done:
-			#env.render()
+			env.render()
 			#escolhe ou exploracao ou abusar do que ja sabe pelo epsilon greedy
 			prox_acao_disc, prox_prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
 			#print(prox_acao_disc)
@@ -236,7 +236,7 @@ with tf.Session() as sess:
 			#print("Terminou?", prox_done) #terminou?
 			#print("Infos Adicionais", prox_info) #valores setados em data.json
 
-			prox_acao_array = env.action(prox_acao_disc)		
+			prox_acao_array = env.acoes_discretizadas(prox_acao_disc)		
 			prox_estado_emp = np.stack(env.env.frames, axis = 2)
 			#print(prox_acao_array)
 			recompensas_episodio.append(prox_rew)
