@@ -5,6 +5,7 @@ import numpy as np
 import retro
 import time
 import cv2
+import gc
 from baselines.common.atari_wrappers import FrameStack
 import matplotlib.pyplot as plt
 import warnings # ignora os warnings do skimage
@@ -92,7 +93,7 @@ gamma = 0.95
 #memoria
 pretrain = tamanho_batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
 					#(precisamos de dados para comecar)
-tamanho_memoria = 1000000
+tamanho_memoria = 500000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
 
 print('OK')
 
@@ -300,6 +301,9 @@ with tf.Session() as sess:
                                                DQRede.acoes: acoes_mb})
 			writer.add_summary(sumario, episodio)
 			writer.flush()
+
+			#coleta o lixo
+			gc.collect()
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:

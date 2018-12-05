@@ -69,13 +69,13 @@ class TrataImg(gym.ObservationWrapper):
 		frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
 		#normaliza os pixels
-		norm_frame = frame/255.0
+		frame = frame/255.0
 
 		#da um resize para ficarmos com uma imagem menor
 		#224X320 -2 x downscale-> 112X160 - pega o meio entre os dois e transforma em quadrado -> 136x136
 		#transformar em quadrado mais para simplficar a criacao dos kernels
-		resize_norm_frame = transform.resize(frame, [136,136])
+		frame = transform.resize(frame, [136,136])
 
-		return resize_norm_frame
+		return frame
 
 
