@@ -7,6 +7,8 @@ import time
 import cv2
 from baselines.common.atari_wrappers import FrameStack
 import matplotlib.pyplot as plt
+import warnings # ignora os warnings do skimage
+warnings.filterwarnings('ignore')
 
 #custom
 from wrappers import *
@@ -30,13 +32,25 @@ env = TrataImg(env)
 
 #modifica o step e adiciona o metodo para empilhar 4 frames dentro do env
 
-env = FrameStack(env, 4)
+frames_empilhados = 4
+
+env = FrameStack(env, frames_empilhados)
 
 #modifica o array de acoes possiveis para apenas necessarias
 
 env = DiscretizadorAcoes(env)
 
 print('OK')
+
+print('Resetando Ambiente...')
+
+#inicia
+env.reset()
+
+print('OK')
+
+env.step(env.action_space.sample())
+
 
 '''
 exemplo:
@@ -51,7 +65,7 @@ e epmilhar ele com np.stack(env.env.frames, axis = 2)
 print('Criando Hiperparametros...')
 
 #modelo
-dim_estado = [224, 320, 4] #4 frames empilhados de 224x320
+dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 136X136
 tamanho_acao = env.action_space.n
 learning_rate = 0.0005
 
@@ -98,13 +112,6 @@ print('Criando Memoria...')
 
 #cria e popula a memoria
 memoria = Mem(buf = tamanho_memoria)
-
-print('OK')
-
-print('Resetando Ambiente...')
-
-#inicia
-env.reset()
 
 print('OK')
 
@@ -227,6 +234,7 @@ with tf.Session() as sess:
 		#entra em loop ate acabar
 		while not done:
 			#env.render()
+			print('Frame', passo_decay)
 			#escolhe ou exploracao ou abusar do que ja sabe pelo epsilon greedy
 			prox_acao_disc, prox_prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
 			#print(prox_acao_disc)

@@ -24,11 +24,11 @@ class DQRede:
 			self.Q_target = tf.placeholder(tf.float32, [None], name = "Q-Target")
 			"""
 			Primeira Convolucao com Batch Norm e Ativacao ELU
-			Input: 224X320XN (N imagens empilhadas)
+			Input: 136X136XN (N imagens empilhadas)
 			"""
 			self.conv1 = tf.layers.conv2d(inputs = self.inputs, #entrada
 										  filters = 24, #numero de saidas de cada aplicadao do filtro
-										  kernel_size = [6,6], #tamanho dos filtros a serem aplicados
+										  kernel_size = [8,8], #tamanho dos filtros a serem aplicados
 										  strides = [2,2], #numero de "pulos" a cada aplicacao do filtro
 										  padding = "VALID", #sem padding (ex:zero padding, adicionar zeros para nao reduzir a dimensionalidade)
 										  kernel_initializer = tf.contrib.layers.xavier_initializer_conv2d(), #inicializador aleatorio dos pesos
@@ -39,7 +39,7 @@ class DQRede:
 																 name = 'Batch_Norm1')
 			self.conv1_saida = tf.nn.elu(self.conv1_batchnorm, name = "Conv1_Saida")
 			'''
-			Saida:110X158X24
+			Saida:65X65X24
 			'''
 
 			'''
@@ -48,11 +48,11 @@ class DQRede:
 
 			self.max_pool_1 = tf.layers.max_pooling2d(inputs = self.conv1_saida,
     												  pool_size = [2,2],
-    												  strides = [4,4],
+    												  strides = [2,2],
     												  padding='VALID',
     												  name="Max_Pool_1")
 			'''
-			Saida:28X40X24
+			Saida:32X32X24
 			'''
 
 			'''
@@ -61,7 +61,7 @@ class DQRede:
 			self.conv2 = tf.layers.conv2d(inputs = self.max_pool_1, #entrada
 										  filters = 32, #numero de saidas de cada aplicadao do filtro
 										  kernel_size = [6,6], #tamanho dos filtros a serem aplicados
-										  strides = [2,2], #numero de "pulos" a cada aplicacao do filtro
+										  strides = [4,4], #numero de "pulos" a cada aplicacao do filtro
 										  padding = "VALID", #sem padding (ex:zero padding, adicionar zeros para nao reduzir a dimensionalidade)
 										  kernel_initializer = tf.contrib.layers.xavier_initializer_conv2d(), #inicializador aleatorio dos pesos
 										  name = "Conv2")
@@ -71,7 +71,7 @@ class DQRede:
 																 name = 'Batch_Norm2')
 			self.conv2_saida = tf.nn.elu(self.conv2_batchnorm, name = "Conv2_Saida")
 			'''
-			Saida:12X18X32
+			Saida:7X7X32
 			'''
 
 			'''
@@ -79,8 +79,8 @@ class DQRede:
 			'''
 			self.conv3 = tf.layers.conv2d(inputs = self.conv2_saida, #entrada
 										  filters = 128, #numero de saidas de cada aplicadao do filtro
-										  kernel_size = [4,6], #tamanho dos filtros a serem aplicados
-										  strides = [4,4], #numero de "pulos" a cada aplicacao do filtro
+										  kernel_size = [2,2], #tamanho dos filtros a serem aplicados
+										  strides = [2,2], #numero de "pulos" a cada aplicacao do filtro
 										  padding = "VALID", #sem padding (ex:zero padding, adicionar zeros para nao reduzir a dimensionalidade)
 										  kernel_initializer = tf.contrib.layers.xavier_initializer_conv2d(), #inicializador aleatorio dos pesos
 										  name = "Conv3")
@@ -90,7 +90,7 @@ class DQRede:
 																 name = 'Batch_Norm3')
 			self.conv3_saida = tf.nn.elu(self.conv3_batchnorm, name = "Conv3_Saida")
 			'''
-			Saida:3X4X128
+			Saida:3X3X64
 			'''
 
 			'''
@@ -100,7 +100,7 @@ class DQRede:
 			self.flatten = tf.layers.flatten(self.conv3_saida)
 
 			'''
-			Saida:1536
+			Saida:1152
 			'''
 
 			'''

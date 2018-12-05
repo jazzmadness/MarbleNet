@@ -3,6 +3,7 @@
 import numpy as np
 import gym
 import cv2
+from skimage import transform
 
 #vamos por stack de frames para ter nocao de movimento. ja tem um metodo implementado em
 #https://github.com/openai/baselines
@@ -62,9 +63,18 @@ Modifica o Observation Wrapper para soltar imagens em escala de cinza
 class TrataImg(gym.ObservationWrapper):
 	def __init__(self, env):
 		super(TrataImg, self).__init__(env) #chama o init do ObservationWrapper
+
 	def observation(self, frame):
 		#converte para escala de cinza
 		frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+
+		#normaliza os pixels
+		#norm_frame = frame/255.0
+
+		#da um resize para ficarmos com uma imagem menor
+		#224X320 -2 x downscale-> 112X160 - pega o meio entre os dois e transforma em quadrado -> 136x136
+		#transformar em quadrado mais para simplficar a criacao dos kernels
+		#resize_norm_frame = transform.resize(frame, [136,136])
 
 		return frame
 
