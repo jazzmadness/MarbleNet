@@ -70,7 +70,7 @@ tamanho_acao = env.action_space.n
 learning_rate = 0.0005
 
 #treino
-numero_episodios = 100
+numero_episodios = 500
 tamanho_batch = 64
 
 #epsilon greedy
