@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from wrappers import *
 from memoria import Mem
 from epsilon_greedy import eg
-from arquitetura_rede_DQN import DQRede
+from arquitetura_rede_DDQN import DDQRede
 
 print('Criando Ambiente...')
 
@@ -47,7 +47,7 @@ tf.reset_default_graph()
 print('Instanciando a Rede...')
 
 #define a rede
-DQRede = DQRede(dim_estado, tamanho_acao, learning_rate)
+DQRede = DDQRede(dim_estado, tamanho_acao, learning_rate)
 
 with tf.Session() as sess:
 

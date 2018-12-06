@@ -15,7 +15,7 @@ warnings.filterwarnings('ignore')
 from wrappers import *
 from memoria import Mem
 #from epsilon_greedy import eg
-from arquitetura_rede_DQN import DQRede
+from arquitetura_rede_DDQN import DDQRede
 
 #inicia o ambiente
 
@@ -105,7 +105,7 @@ tf.reset_default_graph()
 print('Instanciando a Rede...')
 
 #define a rede
-DQRede = DQRede(dim_estado, tamanho_acao, learning_rate)
+DQRede = DDQRede(dim_estado, tamanho_acao, learning_rate)
 
 print('OK')
 
