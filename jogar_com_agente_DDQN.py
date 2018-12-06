@@ -66,7 +66,9 @@ with tf.Session() as sess:
 			estados_emp = np.stack(env.env.frames, axis = 2)
 			#Pega a melhor acao
 			Qs = sess.run(DQRede.saida, feed_dict = {DQRede.inputs: estados_emp.reshape((1, *estados_emp.shape))})
+			#print(Qs)
 			acao = np.argmax(Qs)
+			#print(acao)
 			env.step(acao)
 
 

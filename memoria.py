@@ -14,6 +14,8 @@ class Mem():
 
 	def add(self, exp):
 		self.buffer.append(exp)
+	def indexar(self, i):
+		return self.buffer[i]
 	def amostra(self, batch):
 		return [self.buffer[i] for i in np.random.choice(
 														np.arange(
