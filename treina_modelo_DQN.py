@@ -261,7 +261,9 @@ with tf.Session() as sess:
 			recompensas_episodio.append(prox_rew)
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo += 1
-			passo_decay += 1
+
+			if passo % 8 != 0: #decaimento exponencial a cada 8 frames
+				passo_decay += 1
 
 			#atualizando as coisas atuais para rodar mais um futuro passo:
 			#estado atual recebe o proximo estado
