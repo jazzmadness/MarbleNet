@@ -23,9 +23,7 @@ while not done: #enquanto estamos "vivos":
 	env.render() #renderiza o quadro
 
 	acao = env.action_space.sample() #tira uma amostra de todas as acoes possiveis
-
-	#acao = 9 essa acao por exemplo, vai para baixo
-
+	
 	aux = np.zeros(env.action_space.n)
 
 	aux[acao] = 1

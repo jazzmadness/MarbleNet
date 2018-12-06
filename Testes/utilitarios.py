@@ -3,6 +3,7 @@
 import numpy as np
 import gym
 import cv2
+from skimage import transform
 
 #vamos por stack de frames para ter nocao de movimento. ja tem um metodo implementado em
 #https://github.com/openai/baselines
@@ -19,15 +20,15 @@ class DiscretizadorAcoes(gym.ActionWrapper):
 		super(DiscretizadorAcoes, self).__init__(env) #chama o init do ActionWrapper
 		botoes = ["B", "A", "MODE", "START", "UP", "DOWN", "LEFT", "RIGHT", "C", "Y", "X", "Z"]
 		acoes = [
-				["LEFT"], ["LEFT", "UP"], ["LEFT", "DOWN"],
-				["RIGHT"], ["RIGHT", "UP"], ["RIGHT", "DOWN"],
-				["UP"], ["UP","LEFT"], ["UP", "RIGHT"],
-				["DOWN"], ["DOWN","LEFT"], ["DOWN", "RIGHT"],
+				["LEFT"],# ["LEFT", "UP"], ["LEFT", "DOWN"],
+				["RIGHT"],# ["RIGHT", "UP"], ["RIGHT", "DOWN"],
+				["UP"],# ["UP","LEFT"], ["UP", "RIGHT"],
+				["DOWN"],# ["DOWN","LEFT"], ["DOWN", "RIGHT"],
 				#A,B,C garante um turboboost...so preciso escolher um dos botoes ja que todos fazem a mesma coisa	
-				["A","LEFT"], ["A","LEFT", "UP"], ["A","LEFT", "DOWN"],
-				["A","RIGHT"], ["A","RIGHT", "UP"], ["A","RIGHT", "DOWN"],
-				["A","UP"], ["A","UP","LEFT"], ["A","UP", "RIGHT"],
-				["A","DOWN"], ["A","DOWN","LEFT"], ["A","DOWN", "RIGHT"]
+				["A","LEFT"],# ["A","LEFT", "UP"], ["A","LEFT", "DOWN"],
+				["A","RIGHT"],# ["A","RIGHT", "UP"], ["A","RIGHT", "DOWN"],
+				["A","UP"],# ["A","UP","LEFT"], ["A","UP", "RIGHT"],
+				["A","DOWN"]#, ["A","DOWN","LEFT"], ["A","DOWN", "RIGHT"]
 				]	
 		self._actions = []
 		'''
@@ -50,6 +51,11 @@ class DiscretizadorAcoes(gym.ActionWrapper):
 	def action(self, a):
 		return self._actions[a].copy()
 
+	def acoes_discretizadas(self, a):
+		arr_d = np.array([False] * 8)
+		arr_d[a] = True
+		return arr_d
+
 '''
 Modifica o Observation Wrapper para soltar imagens em escala de cinza
 '''
@@ -57,9 +63,18 @@ Modifica o Observation Wrapper para soltar imagens em escala de cinza
 class TrataImg(gym.ObservationWrapper):
 	def __init__(self, env):
 		super(TrataImg, self).__init__(env) #chama o init do ObservationWrapper
+
 	def observation(self, frame):
 		#converte para escala de cinza
 		frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+
+		#normaliza os pixels
+		frame = frame/255.0
+
+		#da um resize para ficarmos com uma imagem menor
+		#224X320 -2 x downscale-> 112X160 - pega o meio entre os dois e transforma em quadrado -> 136x136
+		#transformar em quadrado mais para simplficar a criacao dos kernels
+		frame = transform.resize(frame, [136,136])
 
 		return frame
 
