@@ -167,7 +167,7 @@ print('Configurando TensorBoard...')
 
 #tensorboard --logdir=/tensorboard/dqn/1
 
-writer = tf.summary.FileWriter("/tensorboard/dqn/1")
+writer = tf.summary.FileWriter("/tensorboard/ddqn/1")
 tf.summary.scalar("Perda", DQRede.perda)
 write_op = tf.summary.merge_all()
 
@@ -322,7 +322,7 @@ with tf.Session() as sess:
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:
-			save_path = saver.save(sess, "./models/modelo_DQN_1.ckpt")
+			save_path = saver.save(sess, "./models/modelo_DDQN_1.ckpt")
 			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)
