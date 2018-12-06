@@ -39,4 +39,4 @@ while not done: #enquanto estamos "vivos":
 	print("Recompensa:", rew) #recompensa
 	print("Terminou?", done) #terminou?
 	print("Infos Adicionais", info) #valores setados em data.json
-	#time.sleep(0.1)
+	time.sleep(0.05)
