@@ -136,7 +136,7 @@ class DDQRede:
 										kernel_initializer = tf.contrib.layers.xavier_initializer(),
 										name = "a_fc")
 			self.a = tf.layers.dense(inputs = self.v_fc,
-									 units = 1,
+									 units = tamanho_acao,
 									 activation = None,
 									 kernel_initializer = tf.contrib.layers.xavier_initializer(),
 									 name = "a")
