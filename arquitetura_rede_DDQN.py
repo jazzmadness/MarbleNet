@@ -20,6 +20,7 @@ class DDQRede:
 		self.dim_estado = dim_estado
 		self.tamanho_acao = tamanho_acao
 		self.learning_rate = learning_rate
+		self.nome = nome
 		#inicializa variaveis
 		with tf.variable_scope(self.nome):
 			self.inputs = tf.placeholder(tf.float32, [None, *dim_estado], name = "Inputs") #[None, dim1, dim2, dim3]
