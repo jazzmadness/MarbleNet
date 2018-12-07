@@ -253,7 +253,7 @@ with tf.Session() as sess:
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo += 1
 			
-			if passo % 60 != 0: #decaimento exponencial a cada 60 frames
+			if passo % 300 != 0: #decaimento exponencial a cada 300 frames
 				passo_decay += 1
 
 			#atualizando as coisas atuais para rodar mais um futuro passo:
