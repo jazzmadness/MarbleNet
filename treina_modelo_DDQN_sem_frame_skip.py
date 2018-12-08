@@ -66,7 +66,7 @@ e epmilhar ele com np.stack(env.env.frames, axis = 2)
 print('Criando Hiperparametros...')
 
 #modelo
-dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 136X136
+dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 84X84
 tamanho_acao = env.action_space.n
 learning_rate = 0.0005
 
