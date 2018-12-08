@@ -7,6 +7,7 @@ import time
 import cv2
 from baselines.common.atari_wrappers import FrameStack
 import matplotlib.pyplot as plt
+from PIL import Image
 
 #custom
 from wrappers import *
@@ -36,8 +37,7 @@ env.reset()
 
 tamanho_acao = env.action_space.n
 learning_rate = 0.0005
-dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 136X136
-
+dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 
 
 ###############################
 

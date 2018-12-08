@@ -93,7 +93,7 @@ gamma = 0.95
 #memoria
 pretrain = tamanho_batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
 					#(precisamos de dados para comecar)
-tamanho_memoria = 500000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
+tamanho_memoria = 20000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
 
 print('OK')
 
@@ -253,7 +253,7 @@ with tf.Session() as sess:
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo += 1
 			
-			if passo % 300 != 0: #decaimento exponencial a cada 300 frames
+			if passo % 1000 != 0: #decaimento exponencial a cada 300 frames
 				passo_decay += 1
 
 			#atualizando as coisas atuais para rodar mais um futuro passo:
@@ -322,7 +322,7 @@ with tf.Session() as sess:
 		print('Episodio: {}'.format(episodio),
                               'Recompensa Total: {}'.format(recomepensa_total),
                               'Perda: {:.4f}'.format(perda),
-                              'Prob. Exploracao: {:.4f}'.format(prob_exp))
+                              'Prob. Exploracao: {:.4f}'.format(prox_prob_exp))
 		#reseta o ambiente e comeca outro episodio
 		print('Acabou episodio, resetando ambiente...')
 		env.reset()

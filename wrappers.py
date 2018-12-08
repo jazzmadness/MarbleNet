@@ -68,13 +68,15 @@ class TrataImg(gym.ObservationWrapper):
 		#converte para escala de cinza
 		frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
-		#normaliza os pixels
-		frame = frame/255.0
+		#corta as bordas da esquerda e da direita que sao totalmente pretas
+		frame = frame[:,15:-15]
+
+		#normalizar os frames nao precisa, pois o proprio transform.resize faz isso
 
 		#da um resize para ficarmos com uma imagem menor
-		#224X320 -2 x downscale-> 112X160 - pega o meio entre os dois e transforma em quadrado -> 136x136
+		#224X320 --> 84X84 (Tentei tamanhos maiores mais estava demorando muito o treino)
 		#transformar em quadrado mais para simplficar a criacao dos kernels
-		frame = transform.resize(frame, [136,136])
+		frame = transform.resize(frame, [84,84])
 
 		return frame
 
