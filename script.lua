@@ -1,7 +1,5 @@
 function check_done()
-	if data.time == 0 then --se o tempo acabou, terminamos o episodio
-		return true
-	elseif data.flag_caiu == 6 then --se a bola caiu, terminamos o episodio
+	if data.time == 0 or data.flag_caiu == 6 then --se o tempo acabou ou a bola caiu, terminamos o episodio
 		return true
 	else
 		return 0
