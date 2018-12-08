@@ -42,7 +42,7 @@ function recompensa_punicao()
 			delta_combinado = delta_combinado - 500 --punicao extra por ter perdido
 		end
 		if flag_caiu_atual - flag_caiu_base == 6 then
-			delta_combinado = delta_combinado - 125 -- punicao extra por ter caido
+			delta_combinado = delta_combinado - 500 -- punicao extra por ter caido
 			flag_caiu_base = flag_caiu_atual -- vai atualizando o flag
 		end
 		
