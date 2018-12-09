@@ -232,11 +232,11 @@ with tf.Session() as sess:
 		recompensas_episodio.append(rew)
 		#memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
 		passo += 1
+		print('Decay + 1')
 		passo_decay += 1
 
 		#entra em loop ate acabar
 		while not done:
-
 			#env.render()
 			#escolhe ou exploracao ou abusar do que ja sabe pelo epsilon greedy
 			prox_acao_disc, prox_prob_exp = eg(env, sess, prob_inicial, min_prob, tx_decay, passo_decay, estado_emp)
@@ -253,8 +253,10 @@ with tf.Session() as sess:
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo += 1
 			
-			if passo % 1000 != 0: #decaimento exponencial a cada 300 frames
+			if passo == 60: #decaimento exponencial a cada 60 frames
+				print('Decay + 1')
 				passo_decay += 1
+				passo = 0
 
 			#atualizando as coisas atuais para rodar mais um futuro passo:
 			#estado atual recebe o proximo estado
@@ -322,6 +324,7 @@ with tf.Session() as sess:
 		print('Episodio: {}'.format(episodio),
                               'Recompensa Total: {}'.format(recomepensa_total),
                               'Perda: {:.4f}'.format(perda),
+                              'Passo Decay: {:.4f}'.format(passo_decay),
                               'Prob. Exploracao: {:.4f}'.format(prox_prob_exp))
 		#reseta o ambiente e comeca outro episodio
 		print('Acabou episodio, resetando ambiente...')
