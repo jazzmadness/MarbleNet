@@ -232,7 +232,6 @@ with tf.Session() as sess:
 		recompensas_episodio.append(rew)
 		#memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
 		passo += 1
-		print('Decay + 1')
 		passo_decay += 1
 
 		#entra em loop ate acabar
@@ -253,8 +252,7 @@ with tf.Session() as sess:
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo += 1
 			
-			if passo == 60: #decaimento exponencial a cada 60 frames
-				print('Decay + 1')
+			if passo == 10: #decaimento exponencial a cada 10 frames
 				passo_decay += 1
 				passo = 0
 
