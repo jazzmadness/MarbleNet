@@ -69,7 +69,8 @@ with tf.Session() as sess:
 			#print(Qs)
 			acao = np.argmax(Qs)
 			print(acao)
-			ob,rew,done,info = env.step(acao)
+			#ob,rew,done,info = 
+			env.step(acao)
 
 
 
