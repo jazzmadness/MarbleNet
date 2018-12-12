@@ -11,6 +11,10 @@
     "flag_caiu": {
       "address": 16776858,
       "type": ">d2"
+    },
+    "progresso": {
+      "address": 16754702,
+      "type": ">u2"
     }    
   }
 }

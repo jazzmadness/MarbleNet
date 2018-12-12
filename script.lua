@@ -17,10 +17,12 @@ end
 -- inicia variaveis de score e tempo
 
 score_anterior = 0 
+progresso_anterior = 0
 tempo_anterior = 0
 
 function recompensa_punicao()
 	local score_atual = data.score
+	local progresso_atual = data.progresso
 	local tempo_atual = data.time
 	local flag_caiu_atual = data.flag_caiu
 
@@ -36,18 +38,23 @@ function recompensa_punicao()
 
 	--condicoes conjuntas
 
-	if score_atual > score_anterior or tempo_atual < tempo_anterior or data.time == 0 or flag_caiu_atual - flag_caiu_base_1 == 6 then --a condicao de tempo esta ao contrario do score em relacao a temporalidade pois a variavel tempo eh decrescente
+	if progresso_atual ~= progresso_anterior or score_atual > score_anterior or 
+												tempo_atual < tempo_anterior or 
+												data.time == 0 or 
+												flag_caiu_atual - flag_caiu_base_1 == 6 then --a condicao de tempo esta ao contrario do score em relacao a temporalidade pois a variavel tempo eh decrescente
 		local delta_score = score_atual - score_anterior
+		local delta_progresso = progresso_atual - progresso_anterior
 		local delta_tempo = tempo_anterior - tempo_atual
-		local delta_combinado = 2*(delta_score) - 10*(delta_tempo) -- score anda de 10 em 10, tempo anda de 1 em 1
+		local delta_combinado = 2*(delta_progresso) + 0.1*(delta_score) - (delta_tempo)
 		score_anterior = score_atual
+		progresso_anterior = progresso_atual
 		tempo_anterior = tempo_atual
 
 		if data.time == 0 then
-			delta_combinado = delta_combinado - 500 --punicao extra por ter perdido
+			delta_combinado = delta_combinado - 100 --punicao extra por ter perdido
 		end
 		if flag_caiu_atual - flag_caiu_base_1 == 6 then
-			delta_combinado = delta_combinado - 500 -- punicao extra por ter caido
+			delta_combinado = delta_combinado - 100 -- punicao extra por ter caido
 			flag_caiu_base_1 = flag_caiu_atual -- vai atualizando o flag
 		end
 		
@@ -58,4 +65,3 @@ function recompensa_punicao()
 		return 0
 	end
 end
-	
