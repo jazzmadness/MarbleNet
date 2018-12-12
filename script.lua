@@ -4,7 +4,7 @@ flag_caiu_base_2 = 0
 
 function check_done()
 	local flag_caiu_atual = data.flag_caiu
-	if data.time == 0 or contagem_caiu == 3 then --se o tempo acabou ou a bola caiu 3 vezes (pois conta 2 a cada caida), terminamos o episodio
+	if data.time == 0 or contagem_caiu == 6 then --se o tempo acabou ou a bola caiu 6 vezes, terminamos o episodio
 		return true
 	elseif flag_caiu_atual - flag_caiu_base_1 == 6 then
 		flag_caiu_base_2 = flag_caiu_atual -- vai atualizando o flag
