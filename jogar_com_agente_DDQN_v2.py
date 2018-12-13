@@ -39,7 +39,7 @@ tamanho_acao = env.action_space.n
 learning_rate = 0.0005
 dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 84x84
 
-###############################
+############################### 
 
 #reseta o grafo (limpa alguma variavel, placeholder, etc)
 tf.reset_default_graph()
@@ -55,7 +55,7 @@ with tf.Session() as sess:
 	saver = tf.train.Saver()
 
 	# carrega o modelo
-	saver.restore(sess, "./models/modelo_DDQN_1.ckpt")
+	saver.restore(sess, "./models/modelo_DDQN_1-45.ckpt")
 
 	done = False
 
