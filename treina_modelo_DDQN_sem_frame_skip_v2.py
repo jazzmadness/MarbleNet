@@ -290,6 +290,7 @@ with tf.Session() as sess:
 			# Q Target = R se episodio terminou em s+1, senao Q_target = R + gamma*max{a}(Q_hat(s',a'))
 
 			for i in range(0, len(mini_batch)):
+				print(acoes_mb[i])
 				terminou = dones_mb[i]
 
 				if terminou:
@@ -319,7 +320,7 @@ with tf.Session() as sess:
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:
-			save_path = saver.save(sess, "./models/modelo_DDQN_1.ckpt")
+			save_path = saver.save(sess, 'modelo_DDQN_1', global_step = episodio)
 			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)
