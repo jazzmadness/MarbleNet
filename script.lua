@@ -45,7 +45,7 @@ function recompensa_punicao()
 		local delta_score = score_atual - score_anterior
 		local delta_progresso = progresso_atual - progresso_anterior
 		local delta_tempo = tempo_anterior - tempo_atual
-		local delta_combinado = 2*(delta_progresso) + 0.1*(delta_score) - (delta_tempo) -- foca no progreso, porem da recompensa pelo score pois o progresso so comeca a pontuar com momentum, e pune a cada segundo passado
+		local delta_combinado = 15*(delta_progresso) + (delta_score) - 10*(delta_tempo) -- foca no progreso, porem da recompensa pelo score pois o progresso so comeca a pontuar com momentum, e pune a cada segundo passado
 		score_anterior = score_atual
 		progresso_anterior = progresso_atual
 		tempo_anterior = tempo_atual

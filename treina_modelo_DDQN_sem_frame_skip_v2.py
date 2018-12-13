@@ -93,7 +93,7 @@ gamma = 0.95
 #memoria
 pretrain = tamanho_batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
 					#(precisamos de dados para comecar)
-tamanho_memoria = 22000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
+tamanho_memoria = 25000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
 
 print('OK')
 
@@ -232,7 +232,7 @@ with tf.Session() as sess:
 		recompensas_episodio.append(rew)
 		#memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
 		passo += 1
-		if passo == 12: #decaimento exponencial a cada 12 frames
+		if passo == 15: #decaimento exponencial a cada 15 frames
 			passo_decay += 1
 			passo = 0
 			
@@ -256,7 +256,7 @@ with tf.Session() as sess:
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo += 1
 			
-			if passo == 12: #decaimento exponencial a cada 12 frames
+			if passo == 15: #decaimento exponencial a cada 15 frames
 				passo_decay += 1
 				passo = 0
 
