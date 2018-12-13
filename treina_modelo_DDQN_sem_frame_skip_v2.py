@@ -290,7 +290,6 @@ with tf.Session() as sess:
 			# Q Target = R se episodio terminou em s+1, senao Q_target = R + gamma*max{a}(Q_hat(s',a'))
 
 			for i in range(0, len(mini_batch)):
-				print(acoes_mb[i])
 				terminou = dones_mb[i]
 
 				if terminou:
