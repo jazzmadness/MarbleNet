@@ -37,7 +37,7 @@ env.reset()
 
 tamanho_acao = env.action_space.n
 learning_rate = 0.0005
-dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 
+dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 84x84
 
 ###############################
 
@@ -46,14 +46,16 @@ tf.reset_default_graph()
 
 print('Instanciando a Rede...')
 
+#define a rede
+DQRede = DDQRede(dim_estado, tamanho_acao, learning_rate)
 
 with tf.Session() as sess:
 
-	#define a rede
-	DQRede = tf.train.import_meta_graph('modelo_DDQN_1-5.meta')
+	#metodo para salvar o modelo
+	saver = tf.train.Saver()
 
 	# carrega o modelo
-	DQRede.restore(sess, tf.train.latest_checkpoint('./'))
+	saver.restore(sess, "./models/modelo_DDQN_1.ckpt")
 
 	done = False
 
@@ -64,7 +66,7 @@ with tf.Session() as sess:
 			estados_emp = np.stack(env.env.frames, axis = 2)
 			#Pega a melhor acao
 			Qs = sess.run(DQRede.saida, feed_dict = {DQRede.inputs: estados_emp.reshape((1, *estados_emp.shape))})
-			#print(Qs)
+			print(Qs)
 			acao = np.argmax(Qs)
 			print(acao)
 			#ob,rew,done,info = 
