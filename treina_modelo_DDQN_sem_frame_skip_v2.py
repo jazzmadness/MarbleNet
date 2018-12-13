@@ -50,9 +50,6 @@ env.reset()
 
 print('OK')
 
-env.step(env.action_space.sample())
-
-
 '''
 exemplo:
 ob,rew,done,info = env.step(env.action_space.sample())
@@ -93,7 +90,7 @@ gamma = 0.95
 #memoria
 pretrain = tamanho_batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
 					#(precisamos de dados para comecar)
-tamanho_memoria = 25000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
+tamanho_memoria = 26000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
 
 print('OK')
 
@@ -319,7 +316,7 @@ with tf.Session() as sess:
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:
-			save_path = saver.save(sess, 'modelo_DDQN_1', global_step = episodio)
+			save_path = saver.save(sess, './models/modelo_DDQN_1.ckpt', global_step = episodio)
 			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)
