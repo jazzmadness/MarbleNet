@@ -46,16 +46,14 @@ tf.reset_default_graph()
 
 print('Instanciando a Rede...')
 
-#define a rede
-DQRede = DDQRede(dim_estado, tamanho_acao, learning_rate)
 
 with tf.Session() as sess:
 
-	#metodo para salvar o modelo
-	saver = tf.train.Saver()
+	#define a rede
+	DQRede = tf.train.import_meta_graph('modelo_DDQN_1-5.meta')
 
 	# carrega o modelo
-	saver.restore(sess, "./models/modelo_DDQN_1.ckpt")
+	DQRede.restore(sess, tf.train.latest_checkpoint('./'))
 
 	done = False
 
