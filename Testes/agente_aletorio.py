@@ -18,6 +18,8 @@ env.reset()
 
 done = False #done significa que o episodio ("vida") foi encerrado
 
+passo = 1
+
 while not done: #enquanto estamos "vivos":
 
 	env.render() #renderiza o quadro
@@ -33,6 +35,9 @@ while not done: #enquanto estamos "vivos":
  
 	ob,rew,done,info = env.step(acao) #coleta todas as informacoes resultantes de um step no ambiente
 
+	passo += 1
+
+	print("Passo", passo)
 	print("Shape da Imagem", ob.shape) #imagem para trabalhar no modelo
 	print("Recompensa:", rew) #recompensa
 	print("Terminou?", done) #terminou?

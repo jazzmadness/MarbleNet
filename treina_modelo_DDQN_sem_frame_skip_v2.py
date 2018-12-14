@@ -6,7 +6,6 @@ import retro
 import time
 import cv2
 import gc
-from baselines.common.atari_wrappers import FrameStack
 import matplotlib.pyplot as plt
 import warnings # ignora os warnings do skimage
 warnings.filterwarnings('ignore')

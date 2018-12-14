@@ -5,7 +5,6 @@ import numpy as np
 import retro
 import time
 import cv2
-from baselines.common.atari_wrappers import FrameStack
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -55,7 +54,7 @@ with tf.Session() as sess:
 	saver = tf.train.Saver()
 
 	# carrega o modelo
-	saver.restore(sess, "./models/modelo_DDQN_1-45.ckpt")
+	saver.restore(sess, "./models/modelo_DDQN_1.ckpt-95")
 
 	done = False
 
