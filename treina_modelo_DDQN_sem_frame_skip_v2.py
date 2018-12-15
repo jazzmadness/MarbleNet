@@ -67,7 +67,7 @@ tamanho_acao = env.action_space.n #8 acoes
 learning_rate = 0.0005
 
 #treino
-numero_episodios = 500
+numero_episodios = 5000
 tamanho_batch = 64
 
 #epsilon greedy
@@ -163,7 +163,7 @@ print('Configurando TensorBoard...')
 
 #tensorboard --logdir=/tensorboard/dqn/1
 
-writer = tf.summary.FileWriter("/tensorboard/ddqn/1")
+writer = tf.summary.FileWriter("/tensorboard/ddqn/2")
 tf.summary.scalar("Perda", DQRede.perda)
 write_op = tf.summary.merge_all()
 
@@ -228,7 +228,7 @@ with tf.Session() as sess:
 		recompensas_episodio.append(rew)
 		#memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
 		passo += 1
-		if passo == 15: #decaimento exponencial a cada 15 frames
+		if passo == 16: #decaimento exponencial a cada 16 frames
 			passo_decay += 1
 			passo = 0
 			
@@ -252,7 +252,7 @@ with tf.Session() as sess:
 			memoria.add((estado_emp, acao_array, rew, prox_estado_emp, done))
 			passo += 1
 			
-			if passo == 15: #decaimento exponencial a cada 15 frames
+			if passo == 16: #decaimento exponencial a cada 16 frames
 				passo_decay += 1
 				passo = 0
 
@@ -315,7 +315,7 @@ with tf.Session() as sess:
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:
-			save_path = saver.save(sess, './models/modelo_DDQN_1.ckpt', global_step = episodio)
+			save_path = saver.save(sess, './models/modelo_DDQN_2.ckpt', global_step = episodio)
 			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)
@@ -329,6 +329,8 @@ with tf.Session() as sess:
 		env.reset()
 
 	print('Chegou ao limite de Episodios, treino acabou.')
+	save_path = saver.save(sess, './models/modelo_DDQN_2.ckpt', global_step = episodio)
+	print("Modelo Salvo!")
 
 
 

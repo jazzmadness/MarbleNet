@@ -4,7 +4,7 @@ flag_caiu_base_2 = 0
 
 function check_done()
 	local flag_caiu_atual = data.flag_caiu
-	if data.time == 0 or contagem_caiu == 4 then --se o tempo acabou ou a bola caiu 6 vezes, terminamos o episodio
+	if data.time == 0 or contagem_caiu == 1 then --se o tempo acabou ou a bola caiu 6 vezes, terminamos o episodio
 		return true
 	elseif flag_caiu_atual - flag_caiu_base_1 == 6 then
 		flag_caiu_base_2 = flag_caiu_atual -- vai atualizando o flag
@@ -45,16 +45,16 @@ function recompensa_punicao()
 		local delta_score = score_atual - score_anterior
 		local delta_progresso = progresso_atual - progresso_anterior
 		local delta_tempo = tempo_anterior - tempo_atual
-		local delta_combinado = 15*(delta_progresso) + (delta_score) - 10*(delta_tempo) -- foca no progreso, porem da recompensa pelo score pois o progresso so comeca a pontuar com momentum, e pune a cada segundo passado
+		local delta_combinado = 15*(delta_progresso) + (delta_score) -- - 10*(delta_tempo) -- foca no progreso, porem da recompensa pelo score pois o progresso so comeca a pontuar com momentum, e pune a cada segundo passado
 		score_anterior = score_atual
 		progresso_anterior = progresso_atual
 		tempo_anterior = tempo_atual
 
 		if data.time == 0 then
-			delta_combinado = delta_combinado - 100 --punicao extra por ter perdido
+			delta_combinado = delta_combinado - 500 --punicao extra por ter perdido
 		end
 		if flag_caiu_atual - flag_caiu_base_1 == 6 then
-			delta_combinado = delta_combinado - 100 -- punicao extra por ter caido
+			delta_combinado = delta_combinado - 500 -- punicao extra por ter caido
 			flag_caiu_base_1 = flag_caiu_atual -- vai atualizando o flag
 		end
 		
