@@ -135,7 +135,7 @@ class DDQRede:
 			self.saida = self.v + tf.subtract(self.a, tf.reduce_mean(self.a, axis = 1, keepdims = True))
 
 			
-			#Q valor predito, eh a soma das 8 saidas vezes as 8 acoes
+			#Q valor predito, eh a soma das 16 saidas vezes as 16 acoes
 
 			self.Q = tf.reduce_sum(tf.multiply(self.saida, self.acoes), axis = 1)
 

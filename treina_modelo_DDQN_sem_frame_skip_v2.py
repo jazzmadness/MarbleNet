@@ -63,7 +63,7 @@ print('Criando Hiperparametros...')
 
 #modelo
 dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 84X84
-tamanho_acao = env.action_space.n #8 acoes
+tamanho_acao = env.action_space.n #16 acoes
 learning_rate = 0.0005
 
 #treino
@@ -89,7 +89,7 @@ gamma = 0.95
 #memoria
 pretrain = tamanho_batch 	#numero de experiencias para guardar quando inicia o agente pela primeira vez 
 					#(precisamos de dados para comecar)
-tamanho_memoria = 26000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
+tamanho_memoria = 27000 #estava um milhao, diminiui pois com 8gb de RAM nao tava aguentando
 
 print('OK')
 
@@ -163,7 +163,7 @@ print('Configurando TensorBoard...')
 
 #tensorboard --logdir=/tensorboard/dqn/1
 
-writer = tf.summary.FileWriter("/tensorboard/ddqn/2")
+writer = tf.summary.FileWriter("/tensorboard/ddqn/3")
 tf.summary.scalar("Perda", DQRede.perda)
 write_op = tf.summary.merge_all()
 
@@ -315,7 +315,7 @@ with tf.Session() as sess:
 
 		#a cada 5 episodios salva o modelo
 		if episodio % 5 == 0:
-			save_path = saver.save(sess, './models/modelo_DDQN_2.ckpt', global_step = episodio)
+			save_path = saver.save(sess, './models/modelo_DDQN_3.ckpt', global_step = episodio)
 			print("Modelo Salvo!")
 
 		recomepensa_total = np.sum(recompensas_episodio)
@@ -329,7 +329,7 @@ with tf.Session() as sess:
 		env.reset()
 
 	print('Chegou ao limite de Episodios, treino acabou.')
-	save_path = saver.save(sess, './models/modelo_DDQN_2.ckpt', global_step = episodio)
+	save_path = saver.save(sess, './models/modelo_DDQN_3.ckpt', global_step = episodio)
 	print("Modelo Salvo!")
 
 
