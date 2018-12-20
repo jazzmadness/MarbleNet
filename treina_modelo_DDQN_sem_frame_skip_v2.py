@@ -64,7 +64,7 @@ print('Criando Hiperparametros...')
 #modelo
 dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 84X84
 tamanho_acao = env.action_space.n #16 acoes
-learning_rate = 0.0005
+learning_rate = 0.001
 
 #treino
 numero_episodios = 5000
