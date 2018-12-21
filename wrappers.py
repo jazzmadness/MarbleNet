@@ -24,15 +24,15 @@ class DiscretizadorAcoes(gym.ActionWrapper):
 		super(DiscretizadorAcoes, self).__init__(env) #chama o init do ActionWrapper
 		botoes = ["B", "A", "MODE", "START", "UP", "DOWN", "LEFT", "RIGHT", "C", "Y", "X", "Z"]
 		acoes = [
-				#["LEFT"], ["LEFT", "UP"], ["LEFT", "DOWN"],
-				#["RIGHT"], ["RIGHT", "UP"], ["RIGHT", "DOWN"],
-				#["UP"], #["UP","LEFT"], ["UP", "RIGHT"], (redundante)
-				#["DOWN"], #["DOWN","LEFT"], ["DOWN", "RIGHT"], (redundante)
+				["LEFT"], #["LEFT", "UP"], ["LEFT", "DOWN"],
+				["RIGHT"], #["RIGHT", "UP"], ["RIGHT", "DOWN"],
+				["UP"], #["UP","LEFT"], ["UP", "RIGHT"], (redundante)
+				["DOWN"]#, ["DOWN","LEFT"], ["DOWN", "RIGHT"], (redundante)
 				#A,B,C garante um turboboost...so preciso escolher um dos botoes ja que todos fazem a mesma coisa	
-				["A","LEFT"], ["A","LEFT", "UP"], ["A","LEFT", "DOWN"],
-				["A","RIGHT"], ["A","RIGHT", "UP"], ["A","RIGHT", "DOWN"],
-				["A","UP"], #["A","UP","LEFT"], ["A","UP", "RIGHT"], (redundante)
-				["A","DOWN"], #["A","DOWN","LEFT"], ["A","DOWN", "RIGHT"] (redundante)
+				#["A","LEFT"], ["A","LEFT", "UP"], ["A","LEFT", "DOWN"],
+				#["A","RIGHT"], ["A","RIGHT", "UP"], ["A","RIGHT", "DOWN"],
+				#["A","UP"], #["A","UP","LEFT"], ["A","UP", "RIGHT"], (redundante)
+				#["A","DOWN"], #["A","DOWN","LEFT"], ["A","DOWN", "RIGHT"] (redundante)
  				]	
 		self._actions = []
 		'''
@@ -56,7 +56,7 @@ class DiscretizadorAcoes(gym.ActionWrapper):
 		return self._actions[a].copy()
 
 	def acoes_discretizadas(self, a):
-		arr_d = np.array([False] * 8)
+		arr_d = np.array([False] * 4)
 		arr_d[a] = True
 		return arr_d
 

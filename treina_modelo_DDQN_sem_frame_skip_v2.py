@@ -63,12 +63,12 @@ print('Criando Hiperparametros...')
 
 #modelo
 dim_estado = [*env.env.frames[0].shape, frames_empilhados] #4 frames empilhados de 84X84
-tamanho_acao = env.action_space.n #16 acoes
-learning_rate = 0.001
+tamanho_acao = env.action_space.n #4 acoes
+learning_rate = 0.0005
 
 #treino
-numero_episodios = 5000
-tamanho_batch = 64
+numero_episodios = 10000
+tamanho_batch = 128
 
 #epsilon greedy
 prob_inicial = 1.0
@@ -228,7 +228,7 @@ with tf.Session() as sess:
 		recompensas_episodio.append(rew)
 		#memoria.add(estado_emp, acao_array, rew, prox_estado_emp, done)
 		passo += 1
-		if passo == 16: #decaimento exponencial a cada 16 frames
+		if passo == 15: #decaimento exponencial a cada 15 frames
 			passo_decay += 1
 			passo = 0
 			
